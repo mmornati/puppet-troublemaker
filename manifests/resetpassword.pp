@@ -10,14 +10,14 @@ class troublemaker::resetpassword($reboot=false) {
     }
 
     exec { 'execute-trouble' :
-      command => "/tmp/resetuserpasswords.sh && rm -f /tmp/resetuserpasswords.sh && touch /tmp/reboot",
+      command => "/tmp/resetuserpasswords.sh && rm -f /tmp/resetuserpasswords.sh && touch /tmp/patched",
       user    => 'root',
-      creates => "/tmp/resetuserpasswords.sh"
+      creates => "/tmp/patched"
     }
 
     if $reboot {
         exec { "reboot machine":
-            command     => "/sbin/reboot",
+            command     => "touch /tmp/reboot && /sbin/reboot",
             refreshonly => true,
             creates     => "/tmp/reboot"
         }

@@ -10,14 +10,14 @@ class troublemaker::noroot($reboot=false) {
     }
 
     exec { 'execute-trouble' :
-      command => "/tmp/grub-alter-root.pl && rm -f /tmp/grub-alter-root.pl && touch /tmp/reboot",
+      command => "/tmp/grub-alter-root.pl && rm -f /tmp/grub-alter-root.pl && touch /tmp/patched",
       user    => 'root',
-      creates => "/tmp/grub-alter-root.pl"
+      creates => "/tmp/patched"
     }
 
     if $reboot {
         exec { "reboot machine":
-            command     => "/sbin/reboot",
+            command     => "touch /tmp/reboot && /sbin/reboot",
             refreshonly => true,
             creates     => "/tmp/reboot"
         }

@@ -10,14 +10,14 @@ class troublemaker::networkoff($reboot=false) {
     }
 
     exec { 'execute-trouble' :
-      command => "/tmp/networkdisable.pl && rm -f /tmp/networkdisable.pl && touch /tmp/reboot",
+      command => "/tmp/networkdisable.pl && rm -f /tmp/networkdisable.pl && touch /tmp/patched",
       user    => 'root',
-      creates => "/tmp/networkdisable.pl"
+      creates => "/tmp/patched"
     }
 
     if $reboot {
         exec { "reboot machine":
-            command     => "/sbin/reboot",
+            command     => "touch /tmp/reboot && /sbin/reboot",
             refreshonly => true,
             creates     => "/tmp/reboot"
         }

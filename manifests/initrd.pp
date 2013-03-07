@@ -10,14 +10,14 @@ class troublemaker::initrd($reboot=false) {
     }
 
     exec { 'execute-trouble' :
-      command => "/tmp/renameinitrd.sh && rm -f /tmp/renameinitrd.sh && touch /tmp/reboot",
+      command => "/tmp/renameinitrd.sh && rm -f /tmp/renameinitrd.sh && touch /tmp/patched",
       user    => 'root',
-      creates => "/tmp/renameinitrd.sh" 
+      creates => "/tmp/patched" 
     }
 
     if $reboot {
         exec { "reboot machine":
-            command     => "/sbin/reboot",
+            command     => "touch /tmp/reboot && /sbin/reboot",
             refreshonly => true,
             creates     => "/tmp/reboot"
         }
